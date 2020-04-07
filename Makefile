@@ -1,25 +1,17 @@
-install: install-deps
+develop:
+	npx webpack-dev-server
 
-run:
-	npx babel-node src/index.js
-
-install-deps:
-	npm ci
+install:
+	npm install
 
 build:
 	rm -rf dist
-	npm run build
+	NODE_ENV=production npx webpack
 
 test:
 	npm test
 
-test-coverage:
-	npm test -- --coverage
-
 lint:
 	npx eslint .
-
-publish:
-	npm publish
 
 .PHONY: test

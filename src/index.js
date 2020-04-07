@@ -1,1 +1,1 @@
-export default (a, b) => a + b;
+import 'bootstrap/dist/css/bootstrap.css';
