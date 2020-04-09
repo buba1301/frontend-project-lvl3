@@ -1,5 +1,5 @@
-develop:
-	npx webpack-dev-server
+dev:
+	npx webpack-dev-server --open
 
 install:
 	npm install
