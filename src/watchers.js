@@ -10,8 +10,6 @@ export default (state, t) => {
   const feedbackElem = document.querySelector('.feedback');
 
   watch(form, 'errors', () => {
-    const errorText = feedbackElem.textContent;
-    console.log(errorText);
     const { errors, value } = state.form;
     const errorType = errors;
     if (errorType === '' || value === '') {
@@ -71,7 +69,6 @@ export default (state, t) => {
       renders('channelItem', channel);
 
       const filterPosts = postsList.find((post) => id === post.id);
-      console.log(filterPosts);
 
       renders('newsItem', [channel, filterPosts]);
 

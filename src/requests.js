@@ -23,7 +23,6 @@ export const regularNewsUpdates = (state) => {
     const currentPostsLinkList = currentPostsList.posts.map(({ link }) => link);
 
     const postsDifferenceList = _.difference(updatePostsLinkList, currentPostsLinkList);
-    console.log(postsDifferenceList);
     return [...currentPostsList.posts, ...postsDifferenceList];
   };
 

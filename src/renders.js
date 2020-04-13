@@ -34,9 +34,7 @@ const renderChannelElem = (channel) => {
 
 const renderNewsModalWindow = ([channel, postsList]) => {
   const { id, title, desc } = channel;
-  console.log(id);
   const modalElem = document.getElementById(`exampleModalLong${id}`);
-  console.log(modalElem);
   const html = (
     `<div class="modal-dialog" role="document">
        <div class="modal-content">
@@ -53,7 +51,6 @@ const renderNewsModalWindow = ([channel, postsList]) => {
   modalElem.innerHTML = html;
 
   const modalBodyElem = document.querySelector('.modal-body');
-  console.log(modalBodyElem);
 
   postsList.posts.forEach(({ text, link }) => {
     const a = document.createElement('a');
@@ -68,7 +65,6 @@ const renderNewsModalWindow = ([channel, postsList]) => {
 
 const renderDeleteChannel = (id) => {
   const removeElem = document.getElementById(`channel${id}`);
-  console.log(removeElem);
   removeElem.remove();
 };
 
