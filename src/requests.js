@@ -16,6 +16,8 @@ export const regularNewsUpdates = (state) => {
 
     const { title, posts } = updateFeedData;
 
+    console.log( title, posts );
+
     const updatePostsLinkList = posts.map(({ link }) => link);
 
     const currentChannel = channels.find((channel) => channel.title === title);
