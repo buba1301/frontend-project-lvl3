@@ -46,8 +46,7 @@ const renderNewsModalWindow = ([channel, postsList]) => {
          </div>
          <div class="modal-body"></div>
        </div>
-     </div>
-      `);
+     </div>`);
   modalElem.innerHTML = html;
 
   const modalBodyElem = document.querySelector('.modal-body');
@@ -61,7 +60,6 @@ const renderNewsModalWindow = ([channel, postsList]) => {
     modalBodyElem.append(a);
   });
 };
-
 
 const renderDeleteChannel = (id) => {
   const removeElem = document.getElementById(`channel${id}`);

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { watch } from 'melanke-watchjs';
-import renders from './renders';
+import render from './renders';
 
 export default (state, t) => {
   const { feed, form } = state;
@@ -35,11 +35,16 @@ export default (state, t) => {
         break;
       case 'sending':
         submitButton.disabled = true;
+        submitButton.textContent = t('submitButton.sending');
+        feedbackElem.classList.add('text-warning');
+        feedbackElem.textContent = t('field.request');
         break;
       case 'finished':
         submitButton.disabled = false;
+        submitButton.textContent = t('submitButton.finish');
+        feedbackElem.classList.remove('text-warning');
         feedbackElem.classList.add('text-success');
-        feedbackElem.textContent = t('success.field');
+        feedbackElem.textContent = t('field.success');
         setTimeout(() => {
           feedbackElem.classList.remove('text-success');
           feedbackElem.textContent = '';
@@ -66,11 +71,11 @@ export default (state, t) => {
         currentElem.remove();
       }
 
-      renders('channelItem', channel);
+      render('channelItem', channel);
 
       const filterPosts = postsList.find((post) => id === post.id);
 
-      renders('newsItem', [channel, filterPosts]);
+      render('newsItem', [channel, filterPosts]);
 
       const deletElem = document.getElementById(`${id}`);
 
@@ -82,7 +87,7 @@ export default (state, t) => {
         const updatePostsList = postsList.filter((element) => element.id !== currentId);
         feed.channels = updateChannels;
         feed.postsList = updatePostsList;
-        renders('deletItem', currentId);
+        render('deletItem', currentId);
       });
     });
   });

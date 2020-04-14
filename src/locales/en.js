@@ -1,11 +1,16 @@
 export default {
   translation: {
-    success: {
-      field: 'Channel added',
+    field: {
+      request: 'Request in progress, please wait',
+      success: 'Channel added',
     },
     errors: {
       url: 'You must enter a valid URL',
       notOneOf: 'This URL has already been added.',
+    },
+    submitButton: {
+      sending: 'Loading...',
+      finish: 'Add',
     },
   },
 };

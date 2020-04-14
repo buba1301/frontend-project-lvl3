@@ -41,6 +41,7 @@ export const addChannel = (state, url) => {
   axios.get(link)
     .then((response) => {
       const feedData = parseRSS(response.data);
+
       form.processState = 'finished';
 
       const { title, desc, posts } = feedData;

@@ -2,7 +2,22 @@ import i18next from 'i18next';
 import watch from './watchers';
 import resources from './locales';
 import { regularNewsUpdates, addChannel } from './requests';
-import updateValidationState from './validator';
+import validation from './validator';
+
+
+const updateValidationState = (state) => {
+  const { form, feed } = state;
+  const urlsList = feed.channels.map(({ url }) => url);
+  console.log(urlsList);
+  try {
+    validation(form.value, urlsList);
+    form.valid = true;
+    form.errors = '';
+  } catch (error) {
+    form.valid = false;
+    form.errors = error.type;
+  }
+};
 
 export default () => {
   const state = {
@@ -18,8 +33,6 @@ export default () => {
       errors: '',
     },
   };
-
-  console.log(state);
 
   const form = document.querySelector('form');
   const field = document.querySelector('[name="url"]');
