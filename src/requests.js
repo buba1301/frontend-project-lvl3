@@ -2,7 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import parseRSS from './parser';
 
-const proxy = 'http://cors-anywhere.herokuapp.com/';
+const proxy = 'https://cors-anywhere.herokuapp.com/';
 
 export const regularNewsUpdates = (state) => {
   const { channels, postsList } = state.feed;
