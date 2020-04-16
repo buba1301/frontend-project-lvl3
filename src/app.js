@@ -1,14 +1,17 @@
 import i18next from 'i18next';
+import axios from 'axios';
+import _ from 'lodash';
 import watch from './watchers';
+import parseRSS from './parser';
 import resources from './locales';
-import { regularNewsUpdates, addChannel } from './requests';
+import regularNewsUpdates from './requests';
 import validation from './validator';
 
 
 const updateValidationState = (state) => {
   const { form, feed } = state;
   const urlsList = feed.channels.map(({ url }) => url);
-  console.log(urlsList);
+
   try {
     validation(form.value, urlsList);
     form.valid = true;
@@ -19,12 +22,46 @@ const updateValidationState = (state) => {
   }
 };
 
+const proxy = 'https://cors-anywhere.herokuapp.com/';
+
+const addChannel = (state, url) => {
+  const { feed, form } = state;
+
+  const link = `${proxy}${state.form.value}`;
+
+  axios.get(link)
+    .then((response) => {
+      const feedData = parseRSS(response.data);
+
+      form.processState = 'finished';
+
+      const { title, desc, posts } = feedData;
+
+      const id = _.uniqueId();
+
+      feed.activeChannelId = id;
+
+      feed.channels.push({
+        id,
+        title,
+        desc,
+        url,
+      });
+      feed.postsList.push({ id, posts });
+      form.value = '';
+    })
+    .catch((error) => {
+      console.log(error.request);
+    });
+};
+
 export default () => {
   const state = {
     feed: {
       channels: [],
       postsList: [],
       postsListState: 'close',
+      activeChannelId: '',
     },
     form: {
       processState: 'filling',
@@ -34,6 +71,14 @@ export default () => {
     },
   };
 
+  i18next.init({
+    lng: 'en',
+    debug: true,
+    resources,
+  }).then((t) => {
+    watch(state, t);
+  });
+
   const form = document.querySelector('form');
   const field = document.querySelector('[name="url"]');
 
@@ -41,7 +86,7 @@ export default () => {
 
   field.addEventListener('input', ({ target }) => {
     state.form.value = target.value;
-    updateValidationState(state);
+    updateValidationState(state, proxy);
   });
 
   form.addEventListener('submit', (e) => {
@@ -52,13 +97,5 @@ export default () => {
     state.form.processState = 'sending';
 
     addChannel(state, url);
-  });
-
-  i18next.init({
-    lng: 'en',
-    debug: true,
-    resources,
-  }).then((t) => {
-    watch(state, t);
   });
 };

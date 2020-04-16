@@ -9,6 +9,8 @@ export default (state, t) => {
   const submitButton = document.querySelector('[type="submit"]');
   const feedbackElem = document.querySelector('.feedback');
 
+  render('containerForChannals', t);
+
   watch(form, 'errors', () => {
     const { errors, value } = state.form;
     const errorType = errors;
@@ -60,35 +62,29 @@ export default (state, t) => {
   });
 
   watch(feed, 'channels', () => {
-    const { channels, postsList } = state.feed;
+    const { channels, activeChannelId } = state.feed;
+    console.log(channels);
 
     channels.forEach((channel) => {
-      const { id } = channel;
-
-      const currentElem = document.getElementById(`channel${id}`);
-
-      if (currentElem) {
-        currentElem.remove();
-      }
-
-      render('channelItem', channel);
-
-      const filterPosts = postsList.find((post) => id === post.id);
-
-      render('newsItem', [channel, filterPosts]);
-
-      const deletElem = document.getElementById(`${id}`);
-
-      deletElem.addEventListener('click', (e) => {
-        e.preventDefault();
-        const { target } = e;
-        const currentId = target.id;
-        const updateChannels = channels.filter((element) => element.id !== currentId);
-        const updatePostsList = postsList.filter((element) => element.id !== currentId);
-        feed.channels = updateChannels;
-        feed.postsList = updatePostsList;
-        render('deletItem', currentId);
-      });
+      render('channelItem', [channel, activeChannelId]);
     });
+
+    const channelsListElem = document.getElementById('rss-channels');
+    channelsListElem.addEventListener('click', ({ target }) => {
+      state.feed.activeChannelId = target.id;
+      render('changeChannel', target.id);
+    });
+  });
+
+  watch(feed, 'activeChannelId', () => {
+    const { postsList, activeChannelId } = state.feed;
+
+    const currentElem = document.getElementById('rss-news');
+
+    currentElem.innerHTML = '';
+
+    const filterPosts = postsList.find((post) => activeChannelId === post.id);
+
+    render('newsItem', filterPosts);
   });
 };

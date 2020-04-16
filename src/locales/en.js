@@ -12,5 +12,9 @@ export default {
       sending: 'Loading...',
       finish: 'Add',
     },
+    headers: {
+      channelsList: 'Channels',
+      newsList: 'News List',
+    },
   },
 };

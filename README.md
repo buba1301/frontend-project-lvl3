@@ -2,5 +2,5 @@
 
 ![Node CI](https://github.com/buba1301/frontend-project-lvl3/workflows/Node%20CI/badge.svg)
 
-[RSS news feed]()
+[RSS news feed](https://frontend-project-lvl3-topaz.now.sh)
 
