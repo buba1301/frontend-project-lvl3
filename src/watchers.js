@@ -13,7 +13,7 @@ export default (state, t) => {
 
   watch(form, 'errors', () => {
     const { errors, value } = state.form;
-    const errorType = errors;
+    const errorType = errors.join('');
     if (errorType === '' || value === '') {
       fieldELement.classList.remove('is-invalid');
       feedbackElem.classList.remove('text-danger');
@@ -34,6 +34,7 @@ export default (state, t) => {
     switch (processState) {
       case 'filling':
         submitButton.disabled = false;
+        submitButton.textContent = t('submitButton.finish');
         break;
       case 'sending':
         submitButton.disabled = true;

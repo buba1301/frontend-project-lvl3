@@ -7,6 +7,7 @@ export default {
     errors: {
       url: 'You must enter a valid URL',
       notOneOf: 'This URL has already been added.',
+      network: 'Network Error',
     },
     submitButton: {
       sending: 'Loading...',

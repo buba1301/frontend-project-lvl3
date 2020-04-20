@@ -4,7 +4,7 @@ import parseRSS from './parser';
 
 const proxy = 'https://cors-anywhere.herokuapp.com/';
 
-const regularNewsUpdates = (state) => {
+export const regularNewsUpdates = (state) => {
   const { channels, postsList } = state.feed;
 
   const updateInterval = 5000;
@@ -32,4 +32,39 @@ const regularNewsUpdates = (state) => {
     })
     .finally(() => setTimeout(() => regularNewsUpdates(state), updateInterval));
 };
-export default regularNewsUpdates;
+
+export const addChannel = (state, url) => {
+  const { feed, form } = state;
+
+  const link = `${proxy}${state.form.value}`;
+
+  form.processState = 'sending';
+
+  axios.get(link)
+    .then((response) => {
+      const feedData = parseRSS(response.data);
+
+      form.processState = 'finished';
+
+      const { title, desc, posts } = feedData;
+
+      const id = _.uniqueId();
+
+      feed.activeChannelId = id;
+
+      feed.channels.push({
+        id,
+        title,
+        desc,
+        url,
+      });
+      feed.postsList.push({ id, posts });
+      form.value = '';
+    })
+    .catch((error) => {
+      form.processState = 'filling';
+      form.errors.push('network');
+      console.log(error.request);
+    });
+};
+// export default regularNewsUpdates;
