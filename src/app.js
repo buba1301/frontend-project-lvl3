@@ -19,8 +19,6 @@ const updateValidationState = (state) => {
   }
 };
 
-// const proxy = 'https://cors-anywhere.herokuapp.com/';
-
 export default () => {
   const state = {
     feed: {
@@ -59,8 +57,6 @@ export default () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const url = formData.get('url');
-
-    
 
     addChannel(state, url);
   });

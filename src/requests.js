@@ -67,4 +67,3 @@ export const addChannel = (state, url) => {
       console.log(error.request);
     });
 };
-// export default regularNewsUpdates;
