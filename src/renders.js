@@ -68,10 +68,10 @@ const renderChannelElem = ([channel, activeChannelId]) => {
   channelsListElem.append(listGroupElem);
 };
 
-const renderNewsElements = (postsList) => {
+const renderNewsElements = (posts) => {
   const newsListElem = document.getElementById('rss-news');
 
-  postsList.posts.forEach(({ text, link }) => {
+  posts.news.forEach(({ text, link }) => {
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'action');
     a.href = link;

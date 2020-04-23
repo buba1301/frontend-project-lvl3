@@ -5,7 +5,7 @@ import parseRSS from './parser';
 const proxy = 'https://cors-anywhere.herokuapp.com/';
 
 export const regularNewsUpdates = (state) => {
-  const { channels, postsList } = state.feed;
+  const { channels, posts } = state.feed;
 
   const updateInterval = 5000;
 
@@ -14,16 +14,16 @@ export const regularNewsUpdates = (state) => {
   const update = ({ data }) => {
     const updateFeedData = parseRSS(data);
 
-    const { title, posts } = updateFeedData;
+    const { title, news } = updateFeedData;
 
-    const updatePostsLinkList = posts.map(({ link }) => link);
+    const updatePostsLinkList = news.map(({ link }) => link);
 
     const currentChannel = channels.find((channel) => channel.title === title);
-    const currentPostsList = postsList.find(({ id }) => id === currentChannel.id);
-    const currentPostsLinkList = currentPostsList.posts.map(({ link }) => link);
+    const currentPostsList = posts.find(({ id }) => id === currentChannel.id);
+    const currentPostsLinkList = currentPostsList.news.map(({ link }) => link);
 
     const postsDifferenceList = _.difference(updatePostsLinkList, currentPostsLinkList);
-    return [...currentPostsList.posts, ...postsDifferenceList];
+    return [...currentPostsList.news, ...postsDifferenceList];
   };
 
   Promise.all(promisesUrls)
@@ -46,7 +46,7 @@ export const addChannel = (state, url) => {
 
       form.processState = 'finished';
 
-      const { title, desc, posts } = feedData;
+      const { title, desc, news } = feedData;
 
       const id = _.uniqueId();
 
@@ -58,12 +58,16 @@ export const addChannel = (state, url) => {
         desc,
         url,
       });
-      feed.postsList.push({ id, posts });
+      feed.posts.push({ id, news });
       form.value = '';
     })
     .catch((error) => {
-      form.processState = 'filling';
-      form.errors.push('network');
       console.log(error.request);
+      if (error.request) {
+        form.errors = ['network'];
+      } else {
+        form.errors = [error.type];
+      }
+      form.processState = 'filling';
     });
 };

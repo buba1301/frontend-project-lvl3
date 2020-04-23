@@ -15,7 +15,7 @@ const updateValidationState = (state) => {
     form.errors = [];
   } catch (error) {
     form.valid = false;
-    form.errors.push(error.type);
+    form.errors = [error.type];
   }
 };
 
@@ -23,8 +23,7 @@ export default () => {
   const state = {
     feed: {
       channels: [],
-      postsList: [],
-      // postsListState: 'close',
+      posts: [],
       activeChannelId: '',
     },
     form: {
@@ -34,6 +33,8 @@ export default () => {
       errors: [],
     },
   };
+
+  console.log(state.feed.errors);
 
   i18next.init({
     lng: 'en',

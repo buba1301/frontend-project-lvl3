@@ -14,6 +14,7 @@ export default (state, t) => {
   watch(form, 'errors', () => {
     const { errors, value } = state.form;
     const errorType = errors.join('');
+
     if (errorType === '' || value === '') {
       fieldELement.classList.remove('is-invalid');
       feedbackElem.classList.remove('text-danger');
@@ -78,13 +79,13 @@ export default (state, t) => {
   });
 
   watch(feed, 'activeChannelId', () => {
-    const { postsList, activeChannelId } = state.feed;
+    const { posts, activeChannelId } = state.feed;
 
     const currentElem = document.getElementById('rss-news');
 
     currentElem.innerHTML = '';
 
-    const filterPosts = postsList.find((post) => activeChannelId === post.id);
+    const filterPosts = posts.find((post) => activeChannelId === post.id);
 
     render('newsItem', filterPosts);
   });
