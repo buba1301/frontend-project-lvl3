@@ -80,12 +80,12 @@ export default (state, t) => {
 
   watch(feed, 'activeChannelId', () => {
     const { posts, activeChannelId } = state.feed;
-
+    console.log(posts);
     const currentElem = document.getElementById('rss-news');
 
     currentElem.innerHTML = '';
 
-    const filterPosts = posts.find((post) => activeChannelId === post.id);
+    const filterPosts = posts.filter(({ channelId }) => activeChannelId === channelId);
 
     render('newsItem', filterPosts);
   });

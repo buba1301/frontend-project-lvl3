@@ -16,14 +16,14 @@ export const regularNewsUpdates = (state) => {
 
     const { title, news } = updateFeedData;
 
-    const updatePostsLinkList = news.map(({ link }) => link);
+    const updatePostsLinksList = news.map(({ link }) => link);
 
     const currentChannel = channels.find((channel) => channel.title === title);
-    const currentPostsList = posts.find(({ id }) => id === currentChannel.id);
-    const currentPostsLinkList = currentPostsList.news.map(({ link }) => link);
+    const currentPostsList = posts.filter(({ channelId }) => channelId === currentChannel.id);
+    const currentPostsLinksList = currentPostsList.map(({ link }) => link);
 
-    const postsDifferenceList = _.difference(updatePostsLinkList, currentPostsLinkList);
-    return [...currentPostsList.news, ...postsDifferenceList];
+    const postsDifferenceList = _.difference(updatePostsLinksList, currentPostsLinksList);
+    return [...currentPostsList, ...postsDifferenceList];
   };
 
   Promise.all(promisesUrls)
@@ -48,21 +48,23 @@ export const addChannel = (state, url) => {
 
       const { title, desc, news } = feedData;
 
-      const id = _.uniqueId();
+      const channelId = _.uniqueId();
 
-      feed.activeChannelId = id;
+      feed.activeChannelId = channelId;
 
       feed.channels.push({
-        id,
+        id: channelId,
         title,
         desc,
         url,
       });
-      feed.posts.push({ id, news });
+      news.forEach((post) => {
+        const updatePost = { ...post, id: _.uniqueId(), channelId };
+        feed.posts.push(updatePost);
+      });
       form.value = '';
     })
     .catch((error) => {
-      console.log(error.request);
       if (error.request) {
         form.errors = ['network'];
       } else {

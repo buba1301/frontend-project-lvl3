@@ -71,12 +71,11 @@ const renderChannelElem = ([channel, activeChannelId]) => {
 const renderNewsElements = (posts) => {
   const newsListElem = document.getElementById('rss-news');
 
-  posts.news.forEach(({ text, link }) => {
+  posts.forEach(({ text, link }) => {
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'action');
     a.href = link;
     a.textContent = text;
-
     newsListElem.append(a);
   });
 };

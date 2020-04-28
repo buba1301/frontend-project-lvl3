@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import watch from './watchers';
 import resources from './locales';
 import { regularNewsUpdates, addChannel } from './requests';
-import validation from './validator';
+import validate from './validator';
 
 
 const updateValidationState = (state) => {
@@ -10,7 +10,7 @@ const updateValidationState = (state) => {
   const urlsList = feed.channels.map(({ url }) => url);
 
   try {
-    validation(form.value, urlsList);
+    validate(form.value, urlsList);
     form.valid = true;
     form.errors = [];
   } catch (error) {
